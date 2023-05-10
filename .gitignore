@@ -34,3 +34,5 @@ build/
 
 # project
 out
+log
+member/src/main/resources/application.properties
