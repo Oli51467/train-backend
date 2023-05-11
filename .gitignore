@@ -38,3 +38,4 @@ log
 member/src/main/resources/application.properties
 gateway/src/main/resources/application.properties
 common/src/main/resources/config/application.properties
+.DS_Store
