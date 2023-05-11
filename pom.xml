@@ -44,7 +44,7 @@
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
-                <version>5.6.3</version>
+                <version>5.8.10</version>
             </dependency>
 
             <dependency>
@@ -71,12 +71,6 @@
                 <artifactId>lombok</artifactId>
                 <version>1.18.24</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.pagehelper</groupId>
-                <artifactId>pagehelper-spring-boot-starter</artifactId>
-                <version>1.4.6</version>
             </dependency>
 
             <!-- spring cloud alibaba  https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E
