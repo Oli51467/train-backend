@@ -6,12 +6,14 @@ import com.sdu.train.common.response.exception.BusinessException;
 import com.sdu.train.common.response.exception.ExceptionEnum;
 import com.sdu.train.member.domain.Member;
 import com.sdu.train.member.domain.MemberExample;
-import com.sdu.train.member.mapper.MemberMapper;
 import com.sdu.train.member.dto.MemberDTO;
+import com.sdu.train.member.mapper.MemberMapper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.sdu.train.common.util.SnowUtil.getSnowflakeNextId;
 
 @Service("MemberService")
 public class MemberService {
@@ -30,7 +32,8 @@ public class MemberService {
         }
 
         Member member = new Member();
-        member.setId(System.currentTimeMillis());
+        // 自增id不适合分布式数据库，uuid会影响索引效率，因为uuid是无序的，用无序id来构建有序的索引目录性能上存在问题 这里使用雪花算法
+        member.setId(getSnowflakeNextId());
         member.setMobile(mobile);
 
         memberMapper.insert(member);
