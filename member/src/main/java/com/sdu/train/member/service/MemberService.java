@@ -2,6 +2,8 @@ package com.sdu.train.member.service;
 
 import cn.hutool.core.collection.CollUtil;
 import com.sdu.train.common.response.ResponseResult;
+import com.sdu.train.common.response.exception.BusinessException;
+import com.sdu.train.common.response.exception.ExceptionEnum;
 import com.sdu.train.member.domain.Member;
 import com.sdu.train.member.domain.MemberExample;
 import com.sdu.train.member.mapper.MemberMapper;
@@ -17,10 +19,6 @@ public class MemberService {
     @Resource
     private MemberMapper memberMapper;
 
-    public Long count() {
-        return memberMapper.countByExample(null);
-    }
-
     public ResponseResult register(MemberDTO memberDTO) {
         String mobile = memberDTO.getMobile();
         MemberExample memberExample = new MemberExample();
@@ -28,7 +26,7 @@ public class MemberService {
         List<Member> list = memberMapper.selectByExample(memberExample);
 
         if (CollUtil.isNotEmpty(list)) {
-            return ResponseResult.fail("手机号已注册");
+            throw new BusinessException(ExceptionEnum.MEMBER_MOBILE_EXIST);
         }
 
         Member member = new Member();
