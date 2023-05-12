@@ -13,7 +13,6 @@
                             <a @click="sendCode">获取验证码</a>
                         </template>
                     </a-input>
-                    <!--<a-input v-model:value="loginForm.code" placeholder="验证码"/>-->
                 </a-form-item>
 
                 <a-form-item>
