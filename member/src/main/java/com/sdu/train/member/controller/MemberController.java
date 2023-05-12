@@ -1,6 +1,5 @@
 package com.sdu.train.member.controller;
 
-import com.sdu.train.common.response.BaseResponse;
 import com.sdu.train.common.response.ResponseResult;
 import com.sdu.train.member.dto.MemberDTO;
 import com.sdu.train.member.dto.MemberLoginDTO;
@@ -11,29 +10,33 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/member")
-@BaseResponse
+@RequestMapping("/api")
 public class MemberController {
 
     @Resource
     private MemberService memberService;
 
-    @PostMapping("/register")
+    @GetMapping(value = "/hello")
+    public ResponseResult test() {
+        return ResponseResult.ok();
+    }
+
+    @PostMapping( "/register")
     @ResponseBody
-    public ResponseResult register(@Valid MemberDTO memberDTO) {
+    public ResponseResult register(@Valid @RequestBody  MemberDTO memberDTO) {
         return memberService.register(memberDTO);
     }
 
     @PostMapping("/verification/send")
     @ResponseBody
-    public ResponseResult sendVerificationCode(@Valid MemberDTO memberDTO) {
+    public ResponseResult sendVerificationCode(@Valid @RequestBody MemberDTO memberDTO) {
         memberService.sendVerificationCode(memberDTO);
         return ResponseResult.ok();
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseResult login(@Valid MemberLoginDTO memberLoginDTO) {
+    public ResponseResult login(@Valid @RequestBody MemberLoginDTO memberLoginDTO) {
         MemberVO memberVO = memberService.login(memberLoginDTO);
         return ResponseResult.ok(memberVO);
     }

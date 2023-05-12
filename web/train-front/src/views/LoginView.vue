@@ -2,13 +2,13 @@
     <a-row class="login">
         <a-col :span="8" :offset="8" class="login-main">
             <h1 style="text-align: center"><rocket-two-tone />&nbsp;售票系统</h1>
-            <a-form :model="loginForm" autocomplete="off">
-                <a-form-item :rules="[{ required: true, message: '请输入手机号!' }]">
+            <a-form :model="loginForm" name="basic" autocomplete="off">
+                <a-form-item label="" name="mobile" :rules="[{ required: true, message: '请输入手机号!' }]">
                     <a-input v-model:value="loginForm.mobile" placeholder="手机号" />
                 </a-form-item>
 
-                <a-form-item :rules="[{ required: true, message: '请输入验证码!' }]">
-                    <a-input :value="loginForm.code">
+                <a-form-item label="" name="code" :rules="[{ required: true, message: '请输入验证码!' }]">
+                    <a-input v-model:value="loginForm.code">
                         <template #addonAfter>
                             <a @click="sendCode">获取验证码</a>
                         </template>
@@ -31,6 +31,7 @@ import axios from 'axios';
 import { notification } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import store from "@/store";
+
 export default defineComponent({
     name: "LoginView",
     setup() {
@@ -42,29 +43,29 @@ export default defineComponent({
         });
 
         const sendCode = () => {
-            axios.post("/member/member/send-code", {
+            axios.post("http://localhost:9000/member/api/verification/send", {
                 mobile: loginForm.mobile
             }).then(response => {
                 let data = response.data;
-                if (data.success) {
+                if (data.code == 200) {
                     notification.success({ description: '发送验证码成功！' });
                     loginForm.code = "8888";
                 } else {
-                    notification.error({ description: data.message });
+                    notification.error({ description: data.msg });
                 }
             });
         };
 
         const login = () => {
-            axios.post("/member/member/login", loginForm).then((response) => {
+            axios.post("http://localhost:9000/member/api/login", loginForm).then((response) => {
                 let data = response.data;
-                if (data.success) {
+                if (data.code == 200) {
                     notification.success({ description: '登录成功！' });
                     // 登录成功，跳到控台主页
                     router.push("/welcome");
                     store.commit("setMember", data.content);
                 } else {
-                    notification.error({ description: data.message });
+                    notification.error({ description: data.msg });
                 }
             })
         };

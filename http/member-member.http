@@ -1,20 +1,25 @@
-POST http://localhost:9000/member/member/register
-Content-Type: application/x-www-form-urlencoded
+POST http://localhost:9000/member/api/register
+Content-Type: application/json
 
-mobile=18660182913
-
-###
-
-POST http://localhost:9000/member/member/verification/send
-Content-Type: application/x-www-form-urlencoded
-
-mobile=18660182913
+{
+  "mobile": 18660182913
+}
 
 ###
 
-POST http://localhost:9000/member/member/login
-Content-Type: application/x-www-form-urlencoded
+POST http://localhost:9000/member/api/verification/send
+Content-Type: application/json
 
-mobile=18660182913&code=8888
+{
+  "mobile": 18660182913
+}
 
 ###
+
+POST http://localhost:9000/member/api/login
+Content-Type: application/json
+
+{
+  "mobile": 18660182913,
+  "code": 8888
+}
