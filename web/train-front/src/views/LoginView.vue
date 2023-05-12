@@ -31,6 +31,7 @@ import axios from 'axios';
 import { notification } from 'ant-design-vue';
 import { useRouter } from 'vue-router'
 import store from "@/store";
+import { SUCCESS } from '@/assets/common/common.js'
 
 export default defineComponent({
     name: "LoginView",
@@ -43,11 +44,11 @@ export default defineComponent({
         });
 
         const sendCode = () => {
-            axios.post("http://localhost:9000/member/api/verification/send", {
+            axios.post("/member/api/verification/send", {
                 mobile: loginForm.mobile
             }).then(response => {
                 let data = response.data;
-                if (data.code == 200) {
+                if (data.code == SUCCESS) {
                     notification.success({ description: '发送验证码成功！' });
                     loginForm.code = "8888";
                 } else {
@@ -57,13 +58,13 @@ export default defineComponent({
         };
 
         const login = () => {
-            axios.post("http://localhost:9000/member/api/login", loginForm).then((response) => {
+            axios.post("/member/api/login", loginForm).then((response) => {
                 let data = response.data;
-                if (data.code == 200) {
+                if (data.code == SUCCESS) {
                     notification.success({ description: '登录成功！' });
                     // 登录成功，跳到控台主页
                     router.push("/welcome");
-                    store.commit("setMember", data.content);
+                    store.commit("updateUser", data.data);
                 } else {
                     notification.error({ description: data.msg });
                 }
