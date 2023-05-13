@@ -7,12 +7,13 @@ import cn.hutool.core.util.RandomUtil;
 import com.sdu.train.common.response.ResponseResult;
 import com.sdu.train.common.response.exception.BusinessException;
 import com.sdu.train.common.response.exception.ExceptionEnum;
+import com.sdu.train.common.util.JwtUtil;
 import com.sdu.train.member.domain.Member;
 import com.sdu.train.member.domain.MemberExample;
 import com.sdu.train.member.dto.MemberDTO;
 import com.sdu.train.member.dto.MemberLoginDTO;
 import com.sdu.train.member.mapper.MemberMapper;
-import com.sdu.train.member.entity.MemberVO;
+import com.sdu.train.member.resp.MemberVO;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,10 @@ public class MemberService {
         if (!"8888".equals(code)) {
             throw new BusinessException(ExceptionEnum.VER_CODE_ERROR);
         }
-        return BeanUtil.copyProperties(memberDB, MemberVO.class);
+        MemberVO memberVO =  BeanUtil.copyProperties(memberDB, MemberVO.class);
+        String token = JwtUtil.createToken(memberVO.getId(), memberVO.getMobile());
+        memberVO.setToken(token);
+        return memberVO;
     }
 
     public void sendVerificationCode(MemberDTO memberDTO) {

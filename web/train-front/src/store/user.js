@@ -12,7 +12,19 @@ const UserModule = {
         updateUser(state, user) {
             state.id = user.id,
             state.mobile = user.mobile,
+            state.token = user.token,
             state.is_login = true
+        },
+        logout(state) {
+            state.id = "";
+            state.token = "";
+            state.mobile = "";
+            state.is_login = false;
+        },
+    },
+    actions: {
+        logout(context) {
+            context.commit("logout");
         },
     },
     modules: {

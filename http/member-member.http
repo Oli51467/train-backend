@@ -23,3 +23,8 @@ Content-Type: application/json
   "mobile": 18660182913,
   "code": 8888
 }
+
+###
+
+GET http://localhost:9000/member/api/hello
+Content-Type: application/json

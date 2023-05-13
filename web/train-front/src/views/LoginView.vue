@@ -47,7 +47,7 @@ export default defineComponent({
                 mobile: loginForm.mobile
             }).then(response => {
                 let data = response.data;
-                if (data.code == SUCCESS) {
+                if (data.code === SUCCESS) {
                     notification.success({ description: '发送验证码成功！' });
                     loginForm.code = "8888";
                 } else {
@@ -59,10 +59,12 @@ export default defineComponent({
         const login = () => {
             axios.post("/member/api/login", loginForm).then((response) => {
                 let data = response.data;
-                if (data.code == SUCCESS) {
+                if (data.code === SUCCESS) {
                     notification.success({ description: '登录成功！' });
                     // 登录成功，跳到控台主页
-                    router.push("/welcome");
+                    router.push({
+                        name: 'index',
+                    });
                     store.commit("updateUser", data.data);
                 } else {
                     notification.error({ description: data.msg });

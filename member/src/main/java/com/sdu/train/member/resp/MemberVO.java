@@ -1,4 +1,4 @@
-package com.sdu.train.member.entity;
+package com.sdu.train.member.resp;
 
 import lombok.Data;
 
@@ -8,4 +8,6 @@ public class MemberVO {
     private Long id;
 
     private String mobile;
+
+    private String token;
 }
