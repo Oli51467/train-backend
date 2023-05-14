@@ -75,15 +75,10 @@ export default defineComponent({
         const pagination = ref({
             total: 0,
             current: 1,
-            pageSize: 10,
+            pageSize: 2,
         });
         let loading = ref(false);
         const columns = [
-            {
-                title: '会员id',
-                dataIndex: 'memberId',
-                key: 'memberId',
-            },
             {
                 title: '姓名',
                 dataIndex: 'name',
@@ -111,21 +106,21 @@ export default defineComponent({
         };
 
         const onEdit = (record) => {
-            passenger.value = window.Tool.copy(record);
+            passenger.value = JSON.parse(JSON.stringify(record));
             visible.value = true;
         };
 
         const onDelete = (record) => {
-            axios.delete("/member/passenger/delete/" + record.id).then((response) => {
+            axios.delete("/member/api/passenger/delete/" + record.id).then((response) => {
                 const data = response.data;
                 if (data.success) {
                     notification.success({ description: "删除成功！" });
                     handleQuery({
                         page: pagination.value.current,
-                        size: pagination.value.pageSize,
+                        pageSize: pagination.value.pageSize,
                     });
                 } else {
-                    notification.error({ description: data.message });
+                    notification.error({ description: data.msg });
                 }
             });
         };
@@ -136,10 +131,10 @@ export default defineComponent({
                 if (data.success) {
                     notification.success({ description: "保存成功！" });
                     visible.value = false;
-                    // handleQuery({
-                    //     page: pagination.value.current,
-                    //     size: pagination.value.pageSize
-                    // });
+                    handleQuery({
+                        page: pagination.value.current,
+                        pageSize: pagination.value.pageSize
+                    });
                 } else {
                     notification.error({ description: data.msg });
                 }
@@ -154,25 +149,25 @@ export default defineComponent({
             if (!param) {
                 param = {
                     page: 1,
-                    size: pagination.value.pageSize
+                    pageSize: pagination.value.pageSize
                 };
             }
             loading.value = true;
-            axios.get("/member/passenger/query-list", {
+            axios.get("/member/api/passenger/get", {
                 params: {
                     page: param.page,
-                    size: param.size
+                    pageSize: param.pageSize
                 }
             }).then((response) => {
                 loading.value = false;
                 let data = response.data;
                 if (data.success) {
-                    passengers.value = data.content.list;
+                    passengers.value = data.data.list;
                     // 设置分页控件的值
                     pagination.value.current = param.page;
-                    pagination.value.total = data.content.total;
+                    pagination.value.total = data.data.total;
                 } else {
-                    notification.error({ description: data.message });
+                    notification.error({ description: data.msg });
                 }
             });
         };
@@ -181,15 +176,15 @@ export default defineComponent({
             // console.log("看看自带的分页参数都有啥：" + pagination);
             handleQuery({
                 page: pagination.current,
-                size: pagination.pageSize
+                pageSize: pagination.pageSize
             });
         };
 
         onMounted(() => {
-            // handleQuery({
-            //     page: 1,
-            //     size: pagination.value.pageSize
-            // });
+            handleQuery({
+                page: 1,
+                pageSize: pagination.value.pageSize
+            });
         });
 
         return {
@@ -199,10 +194,10 @@ export default defineComponent({
             passengers,
             pagination,
             columns,
+            loading,
             handleTableChange,
             handleQuery,
             handleCancel,
-            loading,
             onAdd,
             handleOk,
             onEdit,

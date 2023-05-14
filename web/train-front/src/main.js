@@ -6,6 +6,7 @@ import store from './store'
 import router from './router'
 import * as Icons from '@ant-design/icons-vue'
 import axios from 'axios'
+import './assets/js/enums.js';
 
 const app = createApp(App);
 

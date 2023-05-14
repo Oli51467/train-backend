@@ -32,4 +32,10 @@ public class PassengerController {
         PageResponse<PassengerVO> passengers = passengerService.getPassengerList(data);
         return ResponseResult.ok(passengers);
     }
+
+    @DeleteMapping("/passenger/delete/{id}")
+    public ResponseResult delete(@PathVariable Long id) {
+        passengerService.delete(id);
+        return ResponseResult.ok();
+    }
 }
