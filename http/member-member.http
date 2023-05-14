@@ -24,6 +24,10 @@ Content-Type: application/json
   "code": 8888
 }
 
+> {%
+client.global.set("token", response.body.data.token);
+ %}
+
 ###
 
 GET http://localhost:9000/member/api/hello

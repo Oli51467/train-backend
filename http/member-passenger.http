@@ -1,0 +1,9 @@
+POST http://localhost:9001/member/api/passenger/save
+Content-Type: application/json
+token: {{ token }}
+
+{
+  "name": "djn",
+  "idCard": "123",
+  "type": "2"
+}

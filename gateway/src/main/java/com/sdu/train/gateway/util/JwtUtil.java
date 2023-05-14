@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JwtUtil {
-    private static final Logger LOG = LoggerFactory.getLogger(JwtUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
     /**
      * 盐值很重要，不能泄漏，且每个项目都应该不一样，可以放到配置文件中
@@ -34,16 +34,21 @@ public class JwtUtil {
         payload.put("id", id);
         payload.put("mobile", mobile);
         String token = JWTUtil.createToken(payload, key.getBytes());
-        LOG.info("生成JWT token：{}", token);
+        logger.info("生成JWT token：{}", token);
         return token;
     }
 
     public static boolean validate(String token) {
-        JWT jwt = JWTUtil.parseToken(token).setKey(key.getBytes());
-        // validate包含了verify
-        boolean validate = jwt.validate(0);
-        LOG.info("JWT token校验结果：{}", validate);
-        return validate;
+        try {
+            JWT jwt = JWTUtil.parseToken(token).setKey(key.getBytes());
+            // validate包含了verify
+            boolean validate = jwt.validate(0);
+            logger.info("JWT token校验结果：{}", validate);
+            return validate;
+        } catch (Exception e) {
+            logger.error("Jwt token校验异常, {}", e.getMessage());
+            return false;
+        }
     }
 
     public static JSONObject getJSONObject(String token) {
@@ -52,7 +57,7 @@ public class JwtUtil {
         payloads.remove(JWTPayload.ISSUED_AT);
         payloads.remove(JWTPayload.EXPIRES_AT);
         payloads.remove(JWTPayload.NOT_BEFORE);
-        LOG.info("根据token获取原始内容：{}", payloads);
+        logger.info("根据token获取原始内容：{}", payloads);
         return payloads;
     }
 }

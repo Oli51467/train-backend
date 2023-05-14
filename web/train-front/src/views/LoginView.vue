@@ -69,7 +69,7 @@ export default defineComponent({
                 } else {
                     notification.error({ description: data.msg });
                 }
-            })
+            });
         };
 
         return {

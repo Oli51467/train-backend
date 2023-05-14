@@ -59,7 +59,7 @@ const router = createRouter({
 
 //一个跳转页面的api 在router加载之前起作用 from..to 来自哪个页面和目标页面 next 要不要进行下一步
 router.beforeEach((to, from, next) => {
-    if ((to.meta.requestAuth && !store.state.user.is_login)) {
+    if ((to.meta.requestAuth && !store.state.user.is_login && !store.state.user.token)) {
         next({ name: "login" });
     } else {
         next();
