@@ -11,28 +11,28 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 public class ResponseResult implements Serializable {
-    /**
-     * 返回状态码
-     */
+
+    // 返回状态码
     private Integer code;
-    /**
-     * 返回信息
-     */
+
+    // 返回信息
     private String msg;
-    /**
-     * 数据
-     */
+
+    // 是否成功
+    private Boolean success;
+
+    // 数据
     private Object data;
 
     public static ResponseResult ok() {
-        return new ResponseResult(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg(), null);
+        return new ResponseResult(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg(), ResponseCode.SUCCESS.getSuccess(), null);
     }
 
     public static ResponseResult ok(Object o) {
-        return new ResponseResult(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg(), o);
+        return new ResponseResult(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getMsg(), ResponseCode.SUCCESS.getSuccess(), o);
     }
 
     public static ResponseResult fail(String errorMessage) {
-        return new ResponseResult(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getMsg(), errorMessage);
+        return new ResponseResult(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getMsg(), ResponseCode.FAIL.getSuccess(), errorMessage);
     }
 }

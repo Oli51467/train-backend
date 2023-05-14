@@ -13,7 +13,7 @@ import com.sdu.train.member.domain.MemberExample;
 import com.sdu.train.member.dto.MemberDTO;
 import com.sdu.train.member.dto.MemberLoginDTO;
 import com.sdu.train.member.mapper.MemberMapper;
-import com.sdu.train.member.resp.MemberVO;
+import com.sdu.train.member.viewObject.MemberVO;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

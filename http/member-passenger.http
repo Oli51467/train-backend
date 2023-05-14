@@ -7,3 +7,9 @@ token: {{ token }}
   "idCard": "123",
   "type": "2"
 }
+
+###
+GET http://localhost:9001/member/api/passenger/get?page=1&pageSize=1
+Content-Type: application/json
+token: {{ token }}
+

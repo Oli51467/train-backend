@@ -3,7 +3,7 @@ package com.sdu.train.member.controller;
 import com.sdu.train.common.response.ResponseResult;
 import com.sdu.train.member.dto.MemberDTO;
 import com.sdu.train.member.dto.MemberLoginDTO;
-import com.sdu.train.member.resp.MemberVO;
+import com.sdu.train.member.viewObject.MemberVO;
 import com.sdu.train.member.service.MemberService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;

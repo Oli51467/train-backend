@@ -1,5 +1,6 @@
 package com.sdu.train.member.config;
 
+import com.sdu.train.common.interceptor.LogInterceptor;
 import com.sdu.train.common.interceptor.LoginInterceptor;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +13,13 @@ public class SpringMvcConfig implements WebMvcConfigurer {
     @Resource
     LoginInterceptor loginInterceptor;
 
+    @Resource
+    LogInterceptor logInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(logInterceptor);
+
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(

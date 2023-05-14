@@ -1,12 +1,13 @@
 package com.sdu.train.member.dto;
 
+import com.sdu.train.common.dto.PageBaseDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class PassengerDTO {
+public class PassengerDTO extends PageBaseDTO {
 
     private Long id;
 

@@ -1,11 +1,12 @@
-package com.sdu.train.member.domain;
+package com.sdu.train.member.viewObject;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class Passenger {
+public class PassengerVO {
+
     private Long id;
 
     private Long memberId;
