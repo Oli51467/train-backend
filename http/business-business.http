@@ -1,0 +1,3 @@
+###
+GET http://localhost:9000/business/api/hello
+Content-Type: application/json
