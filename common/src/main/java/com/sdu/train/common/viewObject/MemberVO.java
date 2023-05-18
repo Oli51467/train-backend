@@ -1,4 +1,4 @@
-package com.sdu.train.common.response.viewObject;
+package com.sdu.train.common.viewObject;
 
 import lombok.Data;
 

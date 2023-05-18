@@ -1,6 +1,6 @@
 package com.sdu.train.common.context;
 
-import com.sdu.train.common.response.viewObject.MemberVO;
+import com.sdu.train.common.viewObject.MemberVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
