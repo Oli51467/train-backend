@@ -5,14 +5,14 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sdu.train.common.resp.PageResponse;
+import com.sdu.train.common.response.PageResponse;
 import com.sdu.train.common.util.SnowUtil;
 import com.sdu.train.${module}.domain.${Domain};
 import com.sdu.train.${module}.domain.${Domain}Example;
 import com.sdu.train.${module}.mapper.${Domain}Mapper;
 import com.sdu.train.${module}.dto.${Domain}QueryDTO;
 import com.sdu.train.${module}.dto.${Domain}SaveDTO;
-import com.sdu.train.${module}.resp.${Domain}VO;
+import com.sdu.train.${module}.viewObject.${Domain}VO;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +48,8 @@ public class ${Domain}Service {
         ${Domain}Example.Criteria criteria = ${domain}Example.createCriteria();
 
         logger.info("查询页码：{}", req.getPage());
-        logger.info("每页条数：{}", req.getSize());
-        PageHelper.startPage(req.getPage(), req.getSize());
+        logger.info("每页条数：{}", req.getPageSize());
+        PageHelper.startPage(req.getPage(), req.getPageSize());
         List<${Domain}> ${domain}List = ${domain}Mapper.selectByExample(${domain}Example);
 
         PageInfo<${Domain}> pageInfo = new PageInfo<>(${domain}List);

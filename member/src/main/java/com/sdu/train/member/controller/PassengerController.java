@@ -2,7 +2,7 @@ package com.sdu.train.member.controller;
 
 import com.sdu.train.common.context.LoginMemberContext;
 import com.sdu.train.common.response.ResponseResult;
-import com.sdu.train.common.viewObject.PageResponse;
+import com.sdu.train.common.response.PageResponse;
 import com.sdu.train.member.dto.PassengerDTO;
 import com.sdu.train.member.dto.PassengerQueryDTO;
 import com.sdu.train.member.service.PassengerService;

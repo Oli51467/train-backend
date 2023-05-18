@@ -1,8 +1,8 @@
-package com.jiawa.train.${module}.controller.admin;
+package com.sdu.train.${module}.controller.admin;
 
 import com.sdu.train.common.context.LoginMemberContext;
-import com.sdu.train.common.resp.ResponseResult;
-import com.sdu.train.common.resp.PageResponse;
+import com.sdu.train.common.response.ResponseResult;
+import com.sdu.train.common.response.PageResponse;
 import com.sdu.train.${module}.dto.${Domain}QueryDTO;
 import com.sdu.train.${module}.dto.${Domain}SaveDTO;
 import com.sdu.train.${module}.viewObject.${Domain}VO;
@@ -21,19 +21,19 @@ public class ${Domain}AdminController {
     @PostMapping("/save")
     public ResponseResult save(@Valid @RequestBody ${Domain}SaveDTO req) {
         ${domain}Service.save(req);
-        return new ResponseResult.ok();
+        return ResponseResult.ok();
     }
 
     @GetMapping("/query-list")
     public ResponseResult queryList(@Valid ${Domain}QueryDTO req) {
-        PageResponse<${Domain}QueryDTO> list = ${domain}Service.queryList(req);
+        PageResponse<${Domain}VO> list = ${domain}Service.queryList(req);
         return ResponseResult.ok(list);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseResult delete(@PathVariable Long id) {
         ${domain}Service.delete(id);
-        return PageResponse.ok();
+        return ResponseResult.ok();
     }
 
 }

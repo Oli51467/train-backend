@@ -7,7 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sdu.train.common.context.LoginMemberContext;
 import com.sdu.train.common.util.SnowUtil;
-import com.sdu.train.common.viewObject.PageResponse;
+import com.sdu.train.common.response.PageResponse;
 import com.sdu.train.member.domain.Passenger;
 import com.sdu.train.member.domain.PassengerExample;
 import com.sdu.train.member.dto.PassengerDTO;
