@@ -8,6 +8,26 @@
                         <router-link v-bind:class="route_name == 'index' ? 'nav-link active' : 'nav-link'"
                             :to="{ name: 'index' }">欢迎</router-link>
                     </li>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'station' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'station' }">车站管理</router-link>
+                    </li>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'train' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'train' }">火车管理</router-link>
+                    </li>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'train-station' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'train-station' }">火车车站</router-link>
+                    </li>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'train-carriage' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'train-carriage' }">车厢管理</router-link>
+                    </li>
+                    <li class="nav-item nv">
+                        <router-link v-bind:class="route_name == 'train-seat' ? 'nav-link active' : 'nav-link'"
+                            :to="{ name: 'train-seat' }">车座管理</router-link>
+                    </li>
                 </ul>
             </div>
         </div>

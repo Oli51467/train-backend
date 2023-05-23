@@ -1,10 +1,12 @@
 package com.sdu.train.business.viewObject;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class TrainVO {
@@ -34,6 +36,7 @@ public class TrainVO {
      * 出发时间
      */
     @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
+    @NotNull(message = "【出发时间】不能为空")
     private Date startTime;
     /**
      * 终点站
@@ -47,6 +50,7 @@ public class TrainVO {
      * 到站时间
      */
     @JsonFormat(pattern = "HH:mm:ss",timezone = "GMT+8")
+    @NotNull(message = "【到站时间】不能为空")
     private Date endTime;
     /**
      * 新增时间

@@ -6,6 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sdu.train.common.response.PageResponse;
+import com.sdu.train.common.response.ResponseResult;
 import com.sdu.train.common.util.SnowUtil;
 import com.sdu.train.business.domain.Train;
 import com.sdu.train.business.domain.TrainExample;
@@ -66,5 +67,12 @@ public class TrainService {
 
     public void delete(Long id) {
         trainMapper.deleteByPrimaryKey(id);
+    }
+
+    public ResponseResult queryAll() {
+        TrainExample trainExample = new TrainExample();
+        trainExample.setOrderByClause("code asc");
+        List<Train> trainList = trainMapper.selectByExample(trainExample);
+        return ResponseResult.ok(BeanUtil.copyToList(trainList, TrainVO.class));
     }
 }

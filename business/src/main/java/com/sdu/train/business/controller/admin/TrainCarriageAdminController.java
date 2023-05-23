@@ -1,12 +1,11 @@
 package com.sdu.train.business.controller.admin;
 
-import com.sdu.train.common.context.LoginMemberContext;
-import com.sdu.train.common.response.ResponseResult;
-import com.sdu.train.common.response.PageResponse;
 import com.sdu.train.business.dto.TrainCarriageQueryDTO;
 import com.sdu.train.business.dto.TrainCarriageSaveDTO;
-import com.sdu.train.business.viewObject.TrainCarriageVO;
 import com.sdu.train.business.service.TrainCarriageService;
+import com.sdu.train.business.viewObject.TrainCarriageVO;
+import com.sdu.train.common.response.PageResponse;
+import com.sdu.train.common.response.ResponseResult;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +17,13 @@ public class TrainCarriageAdminController {
     @Resource
     private TrainCarriageService trainCarriageService;
 
-    @PostMapping("/save")
+    @PostMapping("/save/")
     public ResponseResult save(@Valid @RequestBody TrainCarriageSaveDTO req) {
         trainCarriageService.save(req);
         return ResponseResult.ok();
     }
 
-    @GetMapping("/query-list")
+    @GetMapping("/getAll/")
     public ResponseResult queryList(@Valid TrainCarriageQueryDTO req) {
         PageResponse<TrainCarriageVO> list = trainCarriageService.queryList(req);
         return ResponseResult.ok(list);
