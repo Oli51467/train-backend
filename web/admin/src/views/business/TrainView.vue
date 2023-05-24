@@ -15,6 +15,9 @@
                             <a style="color: red">删除</a>
                         </a-popconfirm>
                         <a @click="onEdit(record)">编辑</a>
+                        <a-popconfirm title="生成座位将删除已有记录，确认生成座位?" @confirm="genSeat(record)" ok-text="确认" cancel-text="取消">
+                            <a>生成座位</a>
+                        </a-popconfirm>
                     </a-space>
                 </template>
                 <template v-else-if="column.dataIndex === 'type'">
@@ -29,7 +32,7 @@
         <a-modal v-model:visible="visible" title="车次" @ok="handleOk" ok-text="确认" cancel-text="取消">
             <a-form :model="train" :label-col="{ span: 5 }" :wrapper-col="{ span: 20 }">
                 <a-form-item label="车次编号">
-                    <a-input v-model:value="train.code" />
+                    <a-input v-model:value="train.code" :disabled="!!train.id"/>
                 </a-form-item>
                 <a-form-item label="车次类型">
                     <a-select v-model:value="train.type">
@@ -39,7 +42,7 @@
                     </a-select>
                 </a-form-item>
                 <a-form-item label="始发站">
-                    <a-input v-model:value="train.start" />
+                    <StationSelect v-model="train.start"></StationSelect>
                 </a-form-item>
                 <a-form-item label="始发站拼音">
                     <a-input v-model:value="train.startPinyin" disabled />
@@ -48,7 +51,7 @@
                     <a-time-picker v-model:value="train.startTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
                 </a-form-item>
                 <a-form-item label="终点站">
-                    <a-input v-model:value="train.end" />
+                    <StationSelect v-model="train.end"></StationSelect>
                 </a-form-item>
                 <a-form-item label="终点站拼音">
                     <a-input v-model:value="train.endPinyin" disabled />
@@ -63,7 +66,8 @@
 
 <script>
 import { defineComponent, ref, onMounted, watch } from 'vue';
-import ContentBase from '@/components/base/ContentBase.vue'
+import ContentBase from '@/components/base/ContentBase.vue';
+import StationSelect from '@/components/business/StationSelect.vue';
 import { pinyin } from "pinyin-pro";
 import { notification } from "ant-design-vue";
 import axios from "axios";
@@ -72,6 +76,7 @@ import axios from "axios";
 export default defineComponent({
     components: {
         ContentBase,
+        StationSelect,
     },
     setup() {
         const TRAIN_TYPE_ARRAY = window.TRAIN_TYPE_ARRAY;
@@ -237,6 +242,19 @@ export default defineComponent({
             });
         };
 
+        const genSeat = (record) => {
+            loading.value = true;
+            axios.get("/business/admin/train/seat/generate/" + record.code).then((response) => {
+                loading.value = false;
+                const data = response.data;
+                if (data.success) {
+                    notification.success({ description: "生成成功！" });
+                } else {
+                    notification.error({ description: data.message });
+                }
+            });
+        };
+
         onMounted(() => {
             handleQuery({
                 page: 1,
@@ -251,9 +269,10 @@ export default defineComponent({
             trains,
             pagination,
             columns,
+            loading,
             handleTableChange,
             handleQuery,
-            loading,
+            genSeat,
             onAdd,
             handleOk,
             onEdit,

@@ -2,7 +2,8 @@
     <ContentBase>
         <p>
             <a-space>
-                <a-button type="primary" @click="handleQuery()">刷新</a-button>
+                <TrainSelect v-model="params.trainCode" width="200px"></TrainSelect>
+                <a-button type="primary" @click="handleQuery()">查找</a-button>
                 <a-button type="primary" @click="onAdd">新增</a-button>
             </a-space>
         </p>
@@ -41,14 +42,8 @@
                         </a-select-option>
                     </a-select>
                 </a-form-item>
-                <a-form-item label="座位数">
-                    <a-input v-model:value="trainCarriage.seatCount" />
-                </a-form-item>
                 <a-form-item label="排数">
                     <a-input v-model:value="trainCarriage.rowCount" />
-                </a-form-item>
-                <a-form-item label="列数">
-                    <a-input v-model:value="trainCarriage.colCount" />
                 </a-form-item>
             </a-form>
         </a-modal>
@@ -71,6 +66,10 @@ export default defineComponent({
     setup() {
         const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY;
         const visible = ref(false);
+        let params = ref({
+            trainCode: null,
+        });
+
         let trainCarriage = ref({
             id: undefined,
             trainCode: undefined,
@@ -179,7 +178,8 @@ export default defineComponent({
             axios.get("/business/admin/train-carriage/getAll/", {
                 params: {
                     page: param.page,
-                    pageSize: param.pageSize
+                    pageSize: param.pageSize,
+                    trainCode: params.value.trainCode,
                 }
             }).then((response) => {
                 loading.value = false;
@@ -219,6 +219,7 @@ export default defineComponent({
             pagination,
             columns,
             loading,
+            params,
             handleTableChange,
             handleQuery,
             onAdd,

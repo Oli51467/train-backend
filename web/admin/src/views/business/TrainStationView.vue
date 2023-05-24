@@ -2,7 +2,8 @@
     <ContentBase>
         <p>
             <a-space>
-                <a-button type="primary" @click="handleQuery()">刷新</a-button>
+                <TrainSelect v-model="params.trainCode" width="200px"></TrainSelect>
+                <a-button type="primary" @click="handleQuery()">查找</a-button>
                 <a-button type="primary" @click="onAdd">新增</a-button>
             </a-space>
         </p>
@@ -28,7 +29,7 @@
                     <a-input v-model:value="trainStation.index" />
                 </a-form-item>
                 <a-form-item label="站名">
-                    <a-input v-model:value="trainStation.name" />
+                    <StationSelect v-model="trainStation.name"></StationSelect>
                 </a-form-item>
                 <a-form-item label="站名拼音">
                     <a-input v-model:value="trainStation.namePinyin" disabled />
@@ -40,7 +41,8 @@
                     <a-time-picker v-model:value="trainStation.outTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
                 </a-form-item>
                 <a-form-item label="停站时长">
-                    <a-time-picker v-model:value="trainStation.stopTime" valueFormat="HH:mm:ss" placeholder="请选择时间" />
+                    <a-time-picker v-model:value="trainStation.stopTime" valueFormat="HH:mm:ss" placeholder="请选择时间"
+                        disabled />
                 </a-form-item>
                 <a-form-item label="里程（公里）">
                     <a-input v-model:value="trainStation.km" />
@@ -57,15 +59,22 @@ import axios from "axios";
 import ContentBase from '@/components/base/ContentBase.vue';
 import { pinyin } from "pinyin-pro";
 import TrainSelect from '@/components/business/TrainSelect.vue';
+import StationSelect from '@/components/business/StationSelect.vue';
+import dayjs from 'dayjs';
 
 export default defineComponent({
     components: {
         ContentBase,
         TrainSelect,
+        StationSelect,
     },
 
     setup() {
         const visible = ref(false);
+
+        let params = ref({
+            trainCode: null,
+        });
         let trainStation = ref({
             id: undefined,
             trainCode: undefined,
@@ -142,6 +151,18 @@ export default defineComponent({
             }
         }, { immediate: true });
 
+        // 自动计算停车时长
+        watch(() => trainStation.value.inTime, () => {
+            let diff = dayjs(trainStation.value.outTime, 'HH:mm:ss').diff(dayjs(trainStation.value.inTime, 'HH:mm:ss'), 'seconds');
+            trainStation.value.stopTime = dayjs('00:00:00', 'HH:mm:ss').second(diff).format('HH:mm:ss');
+        }, { immediate: true });
+
+        // 自动计算停车时长
+        watch(() => trainStation.value.outTime, () => {
+            let diff = dayjs(trainStation.value.outTime, 'HH:mm:ss').diff(dayjs(trainStation.value.inTime, 'HH:mm:ss'), 'seconds');
+            trainStation.value.stopTime = dayjs('00:00:00', 'HH:mm:ss').second(diff).format('HH:mm:ss');
+        }, { immediate: true });
+
         onMounted(() => {
             handleQuery({
                 page: 1,
@@ -201,7 +222,8 @@ export default defineComponent({
             axios.get("/business/admin/train-station/getAll/", {
                 params: {
                     page: param.page,
-                    pageSize: param.pageSize
+                    pageSize: param.pageSize,
+                    trainCode: params.value.trainCode,
                 }
             }).then((response) => {
                 loading.value = false;
@@ -233,6 +255,7 @@ export default defineComponent({
             pagination,
             columns,
             loading,
+            params,
             handleTableChange,
             handleQuery,
             onAdd,

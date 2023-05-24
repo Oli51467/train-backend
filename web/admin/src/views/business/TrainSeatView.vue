@@ -2,24 +2,18 @@
     <ContentBase>
         <p>
             <a-space>
-                <a-button type="primary" @click="handleQuery()">刷新</a-button>
-                <a-button type="primary" @click="onAdd">新增</a-button>
+                <TrainSelect v-model="params.trainCode" width="200px"></TrainSelect>
+                <a-button type="primary" @click="handleQuery()">查找</a-button>
             </a-space>
         </p>
         <a-table :dataSource="trainSeats" :columns="columns" :pagination="pagination" @change="handleTableChange"
             :loading="loading">
             <template #bodyCell="{ column, record }">
                 <template v-if="column.dataIndex === 'operation'">
-                    <a-space>
-                        <a-popconfirm title="删除后不可恢复，确认删除?" @confirm="onDelete(record)" ok-text="确认" cancel-text="取消">
-                            <a style="color: red">删除</a>
-                        </a-popconfirm>
-                        <a @click="onEdit(record)">编辑</a>
-                    </a-space>
                 </template>
                 <template v-else-if="column.dataIndex === 'col'">
                     <span v-for="item in SEAT_COL_ARRAY" :key="item.code">
-                        <span v-if="item.code === record.col">
+                        <span v-if="item.code === record.col && item.type === record.seatType">
                             {{ item.desc }}
                         </span>
                     </span>
@@ -33,36 +27,6 @@
                 </template>
             </template>
         </a-table>
-        <a-modal v-model:visible="visible" title="座位" @ok="handleOk" ok-text="确认" cancel-text="取消">
-            <a-form :model="trainSeat" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-                <a-form-item label="车次编号">
-                    <TrainSelect v-model="trainSeat.trainCode"></TrainSelect>
-                </a-form-item>
-                <a-form-item label="厢序">
-                    <a-input v-model:value="trainSeat.carriageIndex" />
-                </a-form-item>
-                <a-form-item label="排号">
-                    <a-input v-model:value="trainSeat.row" />
-                </a-form-item>
-                <a-form-item label="列号">
-                    <a-select v-model:value="trainSeat.col">
-                        <a-select-option v-for="item in SEAT_COL_ARRAY" :key="item.code" :value="item.code">
-                            {{ item.desc }}
-                        </a-select-option>
-                    </a-select>
-                </a-form-item>
-                <a-form-item label="座位类型">
-                    <a-select v-model:value="trainSeat.seatType">
-                        <a-select-option v-for="item in SEAT_TYPE_ARRAY" :key="item.code" :value="item.code">
-                            {{ item.desc }}
-                        </a-select-option>
-                    </a-select>
-                </a-form-item>
-                <a-form-item label="同车厢座序">
-                    <a-input v-model:value="trainSeat.carriageSeatIndex" />
-                </a-form-item>
-            </a-form>
-        </a-modal>
     </ContentBase>
 </template>
   
@@ -83,6 +47,10 @@ export default defineComponent({
         const SEAT_COL_ARRAY = window.SEAT_COL_ARRAY;
         const SEAT_TYPE_ARRAY = window.SEAT_TYPE_ARRAY;
         const visible = ref(false);
+        let params = ref({
+            trainCode: null,
+        });
+
         let trainSeat = ref({
             id: undefined,
             trainCode: undefined,
@@ -133,52 +101,7 @@ export default defineComponent({
                 dataIndex: 'carriageSeatIndex',
                 key: 'carriageSeatIndex',
             },
-            {
-                title: '操作',
-                dataIndex: 'operation'
-            }
         ];
-
-        const onAdd = () => {
-            trainSeat.value = {};
-            visible.value = true;
-        };
-
-        const onEdit = (record) => {
-            trainSeat.value = window.Tool.copy(record);
-            visible.value = true;
-        };
-
-        const onDelete = (record) => {
-            axios.delete("/business/admin/train-seat/delete/" + record.id).then((response) => {
-                const data = response.data;
-                if (data.success) {
-                    notification.success({ description: "删除成功！" });
-                    handleQuery({
-                        page: pagination.value.current,
-                        pageSize: pagination.value.pageSize,
-                    });
-                } else {
-                    notification.error({ description: data.msg });
-                }
-            });
-        };
-
-        const handleOk = () => {
-            axios.post("/business/admin/train-seat/save/", trainSeat.value).then((response) => {
-                let data = response.data;
-                if (data.success) {
-                    notification.success({ description: "保存成功！" });
-                    visible.value = false;
-                    handleQuery({
-                        page: pagination.value.current,
-                        pageSize: pagination.value.pageSize
-                    });
-                } else {
-                    notification.error({ description: data.msg });
-                }
-            });
-        };
 
         const handleQuery = (param) => {
             if (!param) {
@@ -191,7 +114,8 @@ export default defineComponent({
             axios.get("/business/admin/train-seat/getAll/", {
                 params: {
                     page: param.page,
-                    pageSize: param.pageSize
+                    pageSize: param.pageSize,
+                    trainCode: params.value.trainCode,
                 }
             }).then((response) => {
                 loading.value = false;
@@ -231,13 +155,10 @@ export default defineComponent({
             trainSeats,
             pagination,
             columns,
+            loading,
+            params,
             handleTableChange,
             handleQuery,
-            loading,
-            onAdd,
-            handleOk,
-            onEdit,
-            onDelete
         };
     },
 });

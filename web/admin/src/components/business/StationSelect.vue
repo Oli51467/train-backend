@@ -9,7 +9,6 @@
 </template>
   
 <script>
-
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import axios from "axios";
 import { notification } from "ant-design-vue";
@@ -35,10 +34,10 @@ export default defineComponent({
          * 查询所有的车站，用于车站下拉框
          */
         const queryAllStation = () => {
-            axios.get("/business/admin/station/query-all").then((response) => {
+            axios.get("/business/admin/station/get/").then((response) => {
                 let data = response.data;
                 if (data.success) {
-                    stations.value = data.content;
+                    stations.value = data.data;
                 } else {
                     notification.error({ description: data.message });
                 }
@@ -73,9 +72,9 @@ export default defineComponent({
         return {
             name,
             stations,
+            localWidth,
             filterNameOption,
             onChange,
-            localWidth
         };
     },
 });

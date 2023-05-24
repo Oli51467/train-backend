@@ -1,3 +1,10 @@
 ###
 GET http://localhost:9000/business/api/hello
 Content-Type: application/json
+
+###
+GET http://localhost:9000/business/admin/train/seat/generate/G1
+Accept: application/json
+
+###
+

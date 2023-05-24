@@ -29,6 +29,11 @@ public class StationAdminController {
         return ResponseResult.ok(list);
     }
 
+    @GetMapping("/get/")
+    public ResponseResult queryAll() {
+        return stationService.queryAll();
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseResult delete(@PathVariable Long id) {
         stationService.delete(id);
